@@ -16,8 +16,8 @@ namespace Supermercado.API.Controllers
     public async Task<IActionResult> GetAll()
     {
       var produtos = await _produtoService.GetAll();
-      // return Ok(_mapper.Map<IEnumerable<ProdutoDTO>>(produtos));
-      return Ok(produtos);
+      return Ok(_mapper.Map<IEnumerable<ProdutoDTO>>(produtos));
+
     }
 
     [HttpGet("BuscarProduto/{id:int}")]
