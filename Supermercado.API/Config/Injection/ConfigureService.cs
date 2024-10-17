@@ -1,3 +1,4 @@
+using Supermercado.API.Models;
 using Supermercado.API.Services;
 using Supermercado.API.Services.Interfaces;
 
@@ -10,6 +11,7 @@ namespace Supermercado.API.Config.Injection
             services.AddScoped<IClienteService, ClienteService>();
             services.AddScoped<IFuncionarioService, FuncionarioService>();
             services.AddScoped<ISecaoService, SecaoService>();
+            services.AddScoped<IEquipamentoService, EquipamentoService>();
         }
     }
 }
