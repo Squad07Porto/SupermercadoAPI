@@ -26,14 +26,19 @@ namespace Supermercado.API.Infrastructure.Repositories
         public async Task Add(Equipamento equipamento)
         {
             using var connection = _dbConnection;
-            var query = "INSERT INTO Equipamento (TipoEquipamento, Descricao) VALUES (@TipoEquipamento, @Descricao)";
+            var query = "INSERT INTO Equipamento (TipoEquipamento, Descricao, SecaoId) "+ 
+                        "VALUES (@TipoEquipamento, @Descricao, @SecaoId)";
             await connection.ExecuteAsync(query, equipamento);
         }
 
         public async Task Update(Equipamento equipamento)
         {
             using var connection = _dbConnection;
-            var query = "UPDATE Equipamento SET TipoEquipamento = @TipoEquipamento, Descricao = @Descricao WHERE Id = @Id";
+            var query = "UPDATE Equipamento SET " +
+                        "TipoEquipamento = @TipoEquipamento, " +
+                        "Descricao = @Descricao, " +
+                        "SecaoId = @SecaoId" +
+                        "WHERE Id = @Id";
             await connection.ExecuteAsync(query, equipamento);
         }
 
