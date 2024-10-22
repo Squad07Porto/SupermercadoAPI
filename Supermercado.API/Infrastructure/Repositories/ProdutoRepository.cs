@@ -39,11 +39,11 @@ namespace Supermercado.API.Infrastructure.Repositories
         public async Task Update(Produto produto)
         {
             using var connection = _dbConnection;
-            var query = "UPDATE Produto SET" + 
+            var query = "UPDATE Produto SET" +
                         "Codigo = @Codigo, " +
                         "Nome = @Nome, " +
-                        "Preco = @Preco, " + 
-                        "Quantidade = @Quantidade" + 
+                        "Preco = @Preco, " +
+                        "Quantidade = @Quantidade" +
                         "WHERE Id = @Id";
             await connection.ExecuteAsync(query, produto);
         }
