@@ -12,6 +12,7 @@ namespace Supermercado.API.Config.Mappings
             CreateMap<Funcionario, FuncionarioDTO>().ReverseMap();
             CreateMap<Secao, SecaoDTO>().ReverseMap();
             CreateMap<Produto, ProdutoDTO>().ReverseMap();
+            CreateMap<Equipamento, EquipamentoDTO>().ReverseMap();
         }
     }
 }
