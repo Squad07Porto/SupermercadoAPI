@@ -13,6 +13,7 @@ namespace Supermercado.API.Config.Injection
             services.AddScoped<ISecaoService, SecaoService>();
             services.AddScoped<IProdutoService, ProdutoService>();
             services.AddScoped<IEquipamentoService, EquipamentoService>();
+            services.AddScoped<IUsuarioService, UsuarioService>();
         }
     }
 }
