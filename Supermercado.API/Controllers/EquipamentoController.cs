@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Supermercado.API.Models;
 using Supermercado.API.Models.DTO;
@@ -6,6 +7,7 @@ using Supermercado.API.Services.Interfaces;
 
 namespace Supermercado.API.Controllers
 {
+    [Authorize]
     [ApiController]
     public class EquipamentoController(IEquipamentoService equipamentoService, IMapper mapper) : ControllerBase
     {

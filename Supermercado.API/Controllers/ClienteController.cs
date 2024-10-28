@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Supermercado.API.Models;
 using Supermercado.API.Models.DTO;
@@ -6,6 +7,7 @@ using Supermercado.API.Services.Interfaces;
 
 namespace Supermercado.API.Controllers
 {
+    [Authorize]
     [ApiController]
     public class ClienteController(IClienteService clienteService, IMapper mapper) : ControllerBase
     {
@@ -16,7 +18,6 @@ namespace Supermercado.API.Controllers
         public async Task<IActionResult> GetAll()
         {
             var clientes = await _clienteService.GetAll();
-            // return Ok(_mapper.Map<IEnumerable<ClienteDTO>>(clientes));
             return Ok(clientes);
         }
 
