@@ -27,6 +27,7 @@ Os comandos são todos para Linux e sistemas UNIX-like, porém caso você esteja
 
 ### Restaurar o banco a partir de um backup
 `cat backup.sql | docker exec -i CONTAINER /usr/bin/mysql -u root --password=root DATABASE`
+`cat backup.sql | docker exec -i supermercadoapi-db-1 /usr/bin/mysql -u root --password=rootpassword supermercado`
 
 ## .NET
 

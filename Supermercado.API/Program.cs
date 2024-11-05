@@ -51,7 +51,8 @@ builder.Host.ConfigureServices((context, services) =>
 builder.Services.AddSwaggerGen(option =>
 {
     option.SwaggerDoc("v1", new() { Title = "ProdAgri", Version = "v1" });
-    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
+    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
         In = ParameterLocation.Header,
         Description = "Digite o token JWT recebido",
         Name = "Authorization",
@@ -77,7 +78,7 @@ builder.Services.AddSwaggerGen(option =>
 
 builder.Services.AddControllers();
 
-MapperConfiguration mapperConfig = new (mc =>
+MapperConfiguration mapperConfig = new(mc =>
 {
     mc.AddProfile(new MappingProfile());
 });
@@ -96,6 +97,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(
+    options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+);
 
 app.UseHttpsRedirection();
 
