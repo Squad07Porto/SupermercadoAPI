@@ -8,11 +8,12 @@ using Supermercado.API.Infrastructure.Database;
 using System.Text;
 using Supermercado.API.Services;
 using Microsoft.OpenApi.Models;
+using Supermercado.API.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
-builder.Services.AddScoped<IDbConnection>(sp =>
+builder.Services.AddTransient(sp =>
 {
     var dbConnectionFactory = sp.GetRequiredService<IDbConnectionFactory>();
     return dbConnectionFactory.CreateConnection();
@@ -83,7 +84,12 @@ MapperConfiguration mapperConfig = new (mc =>
 
 builder.Services.AddScoped(sp => mapperConfig.CreateMapper());
 
+builder.Services.AddSingleton<IRabbitMQService, RabbitMQService>();
+
 var app = builder.Build();
+
+var rabbitMQService = app.Services.GetRequiredService<IRabbitMQService>();
+rabbitMQService.StartListening();
 
 if (app.Environment.IsDevelopment())
 {
