@@ -54,5 +54,12 @@ namespace Supermercado.API.Infrastructure.Repositories
             var query = "DELETE FROM Produto WHERE Id = @Id";
             await connection.ExecuteAsync(query, new { Id = id });
         }
+
+        public async Task<IEnumerable<Produto>> GetBySecaoId(int secaoId)
+        {
+            using var connection = _dbConnection;
+            var query = "SELECT * FROM Produto WHERE SecaoId = @SecaoId";
+            return await connection.QueryAsync<Produto>(query, new { SecaoId = secaoId });
+        }
     }
 }

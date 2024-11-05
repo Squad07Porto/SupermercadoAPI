@@ -32,5 +32,10 @@ namespace Supermercado.API.Services
         {
             await _produtoRepository.Delete(id);
         }
+
+        public async Task<IEnumerable<Produto>> GetBySecaoId(int secaoId)
+        {
+            return await _produtoRepository.GetBySecaoId(secaoId);
+        }
     }
 }

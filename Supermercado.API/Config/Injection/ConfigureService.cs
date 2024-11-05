@@ -1,4 +1,3 @@
-using Supermercado.API.Models;
 using Supermercado.API.Services;
 using Supermercado.API.Services.Interfaces;
 
