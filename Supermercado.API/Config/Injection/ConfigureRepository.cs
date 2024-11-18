@@ -11,6 +11,7 @@ namespace Supermercado.API.Config.Injection
             services.AddScoped<IFuncionarioRepository, FuncionarioRepository>();
             services.AddScoped<ISecaoRepository, SecaoRepository>();
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
+            services.AddScoped<IFilialRepository, FilialRepository>();
             services.AddScoped<IEquipamentoRepository, EquipamentoRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
         }
