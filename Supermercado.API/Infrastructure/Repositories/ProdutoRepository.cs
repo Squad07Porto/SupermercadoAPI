@@ -61,5 +61,17 @@ namespace Supermercado.API.Infrastructure.Repositories
             var query = "SELECT * FROM Produto WHERE SecaoId = @SecaoId";
             return await connection.QueryAsync<Produto>(query, new { SecaoId = secaoId });
         }
+
+        public async Task<IEnumerable<Produto>> GetByFilialId(int filialId)
+        {
+            using var connection = _dbConnection;
+            var query = @"
+                            SELECT *
+                            FROM Produto
+                            JOIN Secao ON Produto.SecaoId = Secao.Id
+                            WHERE Secao.FilialId = @FilialId
+                        ";
+            return await connection.QueryAsync<Produto>(query, new { FilialId = filialId });
+        }
     }
 }

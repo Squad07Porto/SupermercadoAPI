@@ -37,5 +37,10 @@ namespace Supermercado.API.Services
         {
             return await _produtoRepository.GetBySecaoId(secaoId);
         }
+
+        public async Task<IEnumerable<Produto>> GetByFilialId(int filialId)
+        {
+            return await _produtoRepository.GetByFilialId(filialId);
+        }
     }
 }

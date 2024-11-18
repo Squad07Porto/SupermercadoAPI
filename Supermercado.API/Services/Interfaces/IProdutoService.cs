@@ -10,5 +10,6 @@ namespace Supermercado.API.Services.Interfaces
         Task Update(Produto produto);
         Task Delete(int id);
         Task<IEnumerable<Produto>> GetBySecaoId(int secaoId);
+        Task<IEnumerable<Produto>> GetByFilialId(int filialId);
     }
 }

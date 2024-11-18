@@ -56,5 +56,19 @@ namespace Supermercado.API.Controllers
             await _produtoService.Delete(id);
             return Ok(new { Mensagem = "Produto removido com sucesso" });
         }
+
+        [HttpGet("BuscarProdutosPorSecao/{secaoId:int}")]
+        public async Task<IActionResult> GetBySecao(int secaoId)
+        {
+            var produtos = await _produtoService.GetBySecaoId(secaoId);
+            return Ok(_mapper.Map<IEnumerable<ProdutoDTO>>(produtos));
+        }
+
+        [HttpGet("BuscarProdutosPorFilial/{filialId:int}")]
+        public async Task<IActionResult> GetByFilial(int filialId)
+        {
+            var produtos = await _produtoService.GetByFilialId(filialId);
+            return Ok(_mapper.Map<IEnumerable<ProdutoDTO>>(produtos));
+        }
     }
 }
