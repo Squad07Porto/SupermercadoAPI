@@ -6,18 +6,22 @@ using System.Text;
 namespace Supermercado.API.Services
 {
     using System.Globalization;
+    using Microsoft.AspNetCore.SignalR;
     using Microsoft.Extensions.DependencyInjection;
+    using Supermercado.API.Config.Hubs;
     using Supermercado.API.Models;
 
     public class RabbitMQService : IRabbitMQService
     {
+        private readonly IHubContext<SensorHub> _hubContext;
         private readonly IConnection _connection;
         private readonly IModel _channel;
         private readonly IServiceScopeFactory _scopeFactory;
         private const string QueueName = "sensorQueue";
 
-        public RabbitMQService(IServiceScopeFactory scopeFactory)
+        public RabbitMQService(IServiceScopeFactory scopeFactory, IHubContext<SensorHub> hubContext)
         {
+            _hubContext = hubContext;
             var factory = new ConnectionFactory() { HostName = "localhost" };
             _connection = factory.CreateConnection();
             _scopeFactory = scopeFactory;
@@ -34,6 +38,8 @@ namespace Supermercado.API.Services
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
                 Console.WriteLine("Recebido do sensor: " + message);
+
+                await _hubContext.Clients.All.SendAsync("ReceiveMessage", "Sensor", message);
 
                 using var scope = _scopeFactory.CreateScope();
                 var produtoService = scope.ServiceProvider.GetRequiredService<IProdutoService>();

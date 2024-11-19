@@ -9,6 +9,7 @@ using System.Text;
 using Supermercado.API.Services;
 using Microsoft.OpenApi.Models;
 using Supermercado.API.Services.Interfaces;
+using Supermercado.API.Config.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -87,6 +88,8 @@ builder.Services.AddScoped(sp => mapperConfig.CreateMapper());
 
 builder.Services.AddSingleton<IRabbitMQService, RabbitMQService>();
 
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 
 var rabbitMQService = app.Services.GetRequiredService<IRabbitMQService>();
@@ -105,5 +108,7 @@ app.UseCors(
 app.UseHttpsRedirection();
 
 app.MapControllers();
+
+app.MapHub<SensorHub>("/sensorhub");
 
 app.Run();
