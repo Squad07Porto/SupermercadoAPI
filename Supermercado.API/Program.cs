@@ -10,6 +10,7 @@ using Supermercado.API.Services;
 using Microsoft.OpenApi.Models;
 using Supermercado.API.Services.Interfaces;
 using Supermercado.API.Config.Hubs;
+using Microsoft.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -90,6 +91,15 @@ builder.Services.AddSingleton<IRabbitMQService, RabbitMQService>();
 
 builder.Services.AddSignalR();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", builder => builder
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
+        .AllowCredentials());
+});
+
 var app = builder.Build();
 
 var rabbitMQService = app.Services.GetRequiredService<IRabbitMQService>();
@@ -101,11 +111,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors(
-    options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
-);
-
 app.UseHttpsRedirection();
+
+app.UseCors("CorsPolicy"); 
 
 app.MapControllers();
 
