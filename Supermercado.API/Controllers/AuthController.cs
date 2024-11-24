@@ -17,22 +17,27 @@ namespace Supermercado.API.Controllers
         public async Task<IActionResult> Cadastrar([FromBody] UsuarioDTO usuarioDTO)
         {
             var usuario = _mapper.Map<Usuario>(usuarioDTO);
-            await _usuarioService.RegisterUserAsync(usuario);
+            await _usuarioService.RegisterUserAsync(usuario, User);
             return Ok(new { Mensagem = "Usuário cadastrado com sucesso" });
         }
 
         [HttpPost("Login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> Login([FromBody] UsuarioDTO usuarioDTO)
+        public async Task<IActionResult> Login([FromBody] UsuarioLoginDTO usuarioDTO)
         {
-            var usuario = _mapper.Map<Usuario>(usuarioDTO);
-            var token = await _usuarioService.AuthenticateUserAsync(usuario);
+            try {
+                var usuario = _mapper.Map<Usuario>(usuarioDTO);
+                var token = await _usuarioService.AuthenticateUserAsync(usuario);
 
-            if (token == null)
-                return Unauthorized(new { Erro = "Usuário ou senha inválidos" });
+                if (token == null)
+                    return Unauthorized(new { Erro = "Usuário ou senha inválidos" });
 
-            return Ok(new { Token = token });
+                return Ok(new { Token = token });
+            }  catch (UnauthorizedAccessException ex)
+            {
+                return Forbid(ex.Message);
+            }
         }
     }
 }

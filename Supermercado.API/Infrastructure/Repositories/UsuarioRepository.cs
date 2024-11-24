@@ -12,7 +12,7 @@ namespace Supermercado.API.Infrastructure.Repositories
         public async Task<int> CreateUserAsync(Usuario usuario)
         {
             using var connection = _dbConnection;
-            var query = "INSERT INTO Usuario (Email, Senha, Salt) VALUES (@Email, @Senha, @Salt)";
+            var query = @"INSERT INTO Usuario (Email, Senha, Salt, Cargo) VALUES (@Email, @Senha, @Salt, @Cargo)";
             return await connection.ExecuteAsync(query, usuario);
         }
 

@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using Supermercado.API.Infrastructure.Repositories.Interfaces;
@@ -11,8 +12,20 @@ namespace Supermercado.API.Services
         private readonly IUsuarioRepository _usuarioRepository = usuarioRepository;
         private readonly JwtService _jwtService = jwtService;
 
-        public async Task RegisterUserAsync(Usuario usuario)
+        public async Task RegisterUserAsync(Usuario usuario, ClaimsPrincipal userClaims)
         {
+            var cargoClaim = userClaims.Claims.FirstOrDefault(c => c.Type == "Cargo")?.Value.NormalizeString();
+
+            if (cargoClaim == null || cargoClaim != "funcionario")
+            {
+                throw new UnauthorizedAccessException("Somente funcionários podem criar contas de funcionário.");
+            }
+
+            if (usuario.Cargo.NormalizeString() == "funcionario" && cargoClaim != "funcionario")
+            {
+                throw new UnauthorizedAccessException("Somente funcionários podem criar contas de funcionário.");
+            }
+
             var salt = GenerateSalt();
             usuario.Salt = salt;
             usuario.Senha = HashPassword(usuario.Senha, salt);
