@@ -40,7 +40,7 @@ namespace Supermercado.API.Controllers
             return Ok();
         }
 
-        [HttpPut("/AtualizarFilial/{id:int}")]
+        [HttpPatch("/AtualizarFilial/{id:int}")]
         public async Task<IActionResult> Update(int id, [FromBody] FilialDTO filialDTO)
         {
             var filial = _mapper.Map<Filial>(filialDTO);

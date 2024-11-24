@@ -9,37 +9,39 @@ namespace Supermercado.API.Infrastructure.Repositories
     {
         private readonly IDbConnection _dbConnection = connection;
 
-        public Task<IEnumerable<Filial>> GetAll()
+        public async Task<IEnumerable<Filial>> GetAll()
         {
             using var connection = _dbConnection;
-            return connection.QueryAsync<Filial>("SELECT * FROM Filial");
+            var query = "SELECT * FROM Filial";
+            return await connection.QueryAsync<Filial>(query);
         }
 
-        public Task<Filial?> GetById(int id)
+        public async Task<Filial?> GetById(int id)
         {
             using var connection = _dbConnection;
-            return connection.QueryFirstOrDefaultAsync<Filial>("SELECT * FROM Filial WHERE Id = @Id", new { Id = id });
+            var query = "SELECT * FROM Filial WHERE Id = @Id";
+            return await connection.QueryFirstOrDefaultAsync<Filial>(query, new { Id = id });
         }
 
-        public Task Add(Filial filial)
+        public async Task Add(Filial filial)
         {
             using var connection = _dbConnection;
             var query = "INSERT INTO Filial (Nome, Endereco, CNPJ) VALUES (@Nome, @Endereco, @CNPJ)";
-            return connection.ExecuteAsync(query, filial);
+            await connection.ExecuteAsync(query, filial);
         }
 
-        public Task Update(Filial filial)
+        public async Task Update(Filial filial)
         {
             using var connection = _dbConnection;
             var query = "UPDATE Filial SET Nome = @Nome, Endereco = @Endereco, CNPJ = @CNPJ WHERE Id = @Id";
-            return connection.ExecuteAsync(query, filial);
+            await connection.ExecuteAsync(query, filial);
         }
 
-        public Task Delete(int id)
+        public async Task Delete(int id)
         {
             using var connection = _dbConnection;
             var query = "DELETE FROM Filial WHERE Id = @Id";
-            return connection.ExecuteAsync(query, new { Id = id });
+            await connection.ExecuteAsync(query, new { Id = id });
         }
     }
 }
