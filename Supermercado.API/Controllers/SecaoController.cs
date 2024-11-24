@@ -18,8 +18,7 @@ namespace Supermercado.API.Controllers
         public async Task<IActionResult> GetAll()
         {
             var secoes = await _secaoService.GetAll();
-            var secoesDTO = _mapper.Map<IEnumerable<SecaoDTO>>(secoes);
-            return Ok(secoesDTO);
+            return Ok(secoes);
         }
 
         [HttpGet("BuscarSecao/{id:int}")]

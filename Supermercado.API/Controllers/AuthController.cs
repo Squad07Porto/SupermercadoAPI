@@ -24,6 +24,7 @@ namespace Supermercado.API.Controllers
         [HttpPost("Login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> Login([FromBody] UsuarioLoginDTO usuarioDTO)
         {
             try {
