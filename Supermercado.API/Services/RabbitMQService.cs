@@ -39,7 +39,7 @@ namespace Supermercado.API.Services
                 var message = Encoding.UTF8.GetString(body);
                 Console.WriteLine("Recebido do sensor: " + message);
 
-                await _hubContext.Clients.All.SendAsync("ReceiveMessage", "Sensor", message);
+                await _hubContext.Clients.All.SendAsync("ReceberMensagem", "Sensor", message);
 
                 using var scope = _scopeFactory.CreateScope();
                 var produtoService = scope.ServiceProvider.GetRequiredService<IProdutoService>();
@@ -82,6 +82,8 @@ namespace Supermercado.API.Services
         {
             var body = Encoding.UTF8.GetBytes(message);
             _channel.BasicPublish(exchange: "", routingKey: QueueName, basicProperties: null, body: body);
+
+            _hubContext.Clients.All.SendAsync("ReceberMensagem", message).Wait();
         }
 
 
