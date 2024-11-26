@@ -39,8 +39,6 @@ namespace Supermercado.API.Services
                 var message = Encoding.UTF8.GetString(body);
                 Console.WriteLine("Recebido do sensor: " + message);
 
-                await _hubContext.Clients.All.SendAsync("ReceberMensagem", "Sensor", message);
-
                 using var scope = _scopeFactory.CreateScope();
                 var produtoService = scope.ServiceProvider.GetRequiredService<IProdutoService>();
                 var secaoService = scope.ServiceProvider.GetRequiredService<ISecaoService>();
@@ -66,11 +64,12 @@ namespace Supermercado.API.Services
                         decimal desconto = (decimal)double.Round(new Random().NextDouble() * (0.60 - 0.10) + 0.10, 2);
                         string precoComDesconto = ConvertToCurrency(produtoPromocao.Preco - produtoPromocao.Preco * desconto);
 
-                        Console.WriteLine(
+                        string promocao = 
                             $"Promoção: {produtoPromocao.Nome} com {desconto * 100:0.##}% de desconto! " +
                             $"De {ConvertToCurrency(produtoPromocao.Preco)} " +
-                            $"agora por {precoComDesconto} na seção de {secao.Descricao}!"
-                        );
+                            $"agora por {precoComDesconto} na seção de {secao.Descricao}!";
+
+                        await _hubContext.Clients.All.SendAsync("ReceberMensagem", promocao);
                     }
                 }
             };
@@ -82,10 +81,7 @@ namespace Supermercado.API.Services
         {
             var body = Encoding.UTF8.GetBytes(message);
             _channel.BasicPublish(exchange: "", routingKey: QueueName, basicProperties: null, body: body);
-
-            _hubContext.Clients.All.SendAsync("ReceberMensagem", message).Wait();
         }
-
 
         private static string ConvertToCurrency(decimal value)
         {
