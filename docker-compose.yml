@@ -9,9 +9,6 @@ services:
       ConnectionStrings__DefaultConnection: "server=db;port=3306;database=supermercado;user=root;password=rootpassword"
       RABBITMQ_HOST: "rabbitmq"
       RABBITMQ_PORT: 5672
-      JWT_SECRET: "9468718975a8965ffa6986f4e400c2cec7872420409268b118c483e375c596ff"
-      JWT_ISSUER: "SupermercadoAPI"
-      JWT_AUDIENCE: "SupermercadoAPIUsers"
     depends_on:
       - rabbitmq
       - db
