@@ -10,7 +10,6 @@ using Supermercado.API.Services;
 using Microsoft.OpenApi.Models;
 using Supermercado.API.Services.Interfaces;
 using Supermercado.API.Config.Hubs;
-using Microsoft.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +20,17 @@ builder.Services.AddTransient(sp =>
     return dbConnectionFactory.CreateConnection();
 });
 
-var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+builder.Configuration.AddEnvironmentVariables();
+
+var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER");
+var jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE");
+var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET");
+
+if (string.IsNullOrWhiteSpace(jwtIssuer) || string.IsNullOrWhiteSpace(jwtAudience) || string.IsNullOrWhiteSpace(jwtSecret))
+{
+    throw new Exception("JWT configuration is missing. Please set JWT_ISSUER, JWT_AUDIENCE, and JWT_SECRET environment variables.");
+}
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -34,9 +43,9 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = jwtSettings["Issuer"],
-        ValidAudience = jwtSettings["Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!))
+        ValidIssuer = jwtIssuer,
+        ValidAudience = jwtAudience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret))
     };
 });
 

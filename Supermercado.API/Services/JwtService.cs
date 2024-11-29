@@ -11,10 +11,15 @@ namespace Supermercado.API.Services
 
         public string GenerateToken(string email, string cargo)
         {
-            var jwtSettings = _configuration.GetSection("JwtSettings");
-            string secretKey = jwtSettings["SecretKey"]!;
-            string issuer = jwtSettings["Issuer"]!;
-            string audience = jwtSettings["Audience"]!;
+            string? secretKey = Environment.GetEnvironmentVariable("JWT_SECRET");
+            string? issuer = Environment.GetEnvironmentVariable("JWT_ISSUER");
+            string? audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE");
+
+            if (string.IsNullOrWhiteSpace(secretKey) || string.IsNullOrWhiteSpace(issuer) || string.IsNullOrWhiteSpace(audience))
+            {
+                throw new Exception("JWT configuration is missing. Please set JWT_SECRET, JWT_ISSUER, and JWT_AUDIENCE environment variables.");
+            }
+
             TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
             var expiral = TimeZoneInfo.ConvertTime(DateTime.Now, timeZone);
 
