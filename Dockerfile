@@ -13,9 +13,6 @@ WORKDIR /app
 
 COPY --from=build /app/publish .
 
-COPY ./wait-for-it.sh ./wait-for-it.sh
-RUN chmod +x ./wait-for-it.sh
-
 EXPOSE 80
 
-ENTRYPOINT ["./wait-for-it.sh", "rabbitmq:5672", "--", "dotnet", "Supermercado.API.dll"]
+ENTRYPOINT ["dotnet", "Supermercado.API.dll"]
