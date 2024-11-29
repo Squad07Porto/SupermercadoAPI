@@ -7,9 +7,16 @@ services:
       - "5000:80"
     environment:
       ConnectionStrings__DefaultConnection: "server=db;port=3306;database=supermercado;user=root;password=rootpassword"
+      RABBITMQ_HOST: "rabbitmq"
+      RABBITMQ_PORT: 5672
+      JWT_SECRET: "9468718975a8965ffa6986f4e400c2cec7872420409268b118c483e375c596ff"
+      JWT_ISSUER: "SupermercadoAPI"
+      JWT_AUDIENCE: "SupermercadoAPIUsers"
     depends_on:
-      - db
       - rabbitmq
+      - db
+    networks:
+      - supermercado-network
   rabbitmq:
     image: rabbitmq:4-management
     ports:
@@ -18,6 +25,9 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - supermercado-network
+
   db:
     image: mysql:8.0
     restart: always
@@ -31,3 +41,7 @@ services:
 
 volumes:
   db_data:
+
+networks:
+  supermercado-network:
+    driver: bridge
