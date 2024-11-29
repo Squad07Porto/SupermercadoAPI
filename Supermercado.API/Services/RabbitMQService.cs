@@ -22,7 +22,7 @@ namespace Supermercado.API.Services
         public RabbitMQService(IServiceScopeFactory scopeFactory, IHubContext<SensorHub> hubContext)
         {
             _hubContext = hubContext;
-            var factory = new ConnectionFactory() { HostName = "localhost" };
+            var factory = new ConnectionFactory() { HostName = "rabbitmq" };
             _connection = factory.CreateConnection();
             _scopeFactory = scopeFactory;
             _channel = _connection.CreateModel();

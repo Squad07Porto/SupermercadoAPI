@@ -1,4 +1,15 @@
 services:
+  supermercado-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:80"
+    environment:
+      ConnectionStrings__DefaultConnection: "server=db;port=3306;database=supermercado;user=root;password=rootpassword"
+    depends_on:
+      - db
+      - rabbitmq
   rabbitmq:
     image: rabbitmq:4-management
     ports:
