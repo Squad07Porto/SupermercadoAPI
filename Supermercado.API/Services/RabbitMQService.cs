@@ -27,6 +27,10 @@ namespace Supermercado.API.Services
                 HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST") ?? "localhost",
                 Port = int.Parse(Environment.GetEnvironmentVariable("RABBITMQ_PORT") ?? "5672")
             };
+
+            factory.AutomaticRecoveryEnabled = true;
+            factory.NetworkRecoveryInterval = TimeSpan.FromSeconds(10);
+
             _connection = factory.CreateConnection();
             _scopeFactory = scopeFactory;
             _channel = _connection.CreateModel();
